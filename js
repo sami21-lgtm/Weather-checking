@@ -1,78 +1,90 @@
-// ওয়েদার আপডেট করার মূল ফাংশন
-async function fetchLiveWeather(city) {
+async function fetchWeather(city) {
     try {
-        // লোডিং বোঝানোর জন্য
         document.getElementById('description').innerText = "Searching...";
+        
+        // সার্চ করার সময় ক্যারেক্টার খোঁজার ভঙ্গিতে থাকবে
+        document.getElementById('human-character').innerText = "🚶‍♂️🔍"; 
 
-        // ১. শহরের নাম থেকে Latitude, Longitude এবং Timezone বের করা
-        const geoResponse = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${city}&count=1&language=en&format=json`);
-        const geoData = await geoResponse.json();
+        const geoRes = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${city}&count=1&language=en&format=json`);
+        const geoData = await geoRes.json();
 
-        if (!geoData.results) {
+        if (!geoData.results || geoData.results.length === 0) {
             alert("City not found! Please check the spelling.");
             document.getElementById('description').innerText = "Not Found";
+            document.getElementById('human-character').innerText = "🤷‍♂️"; // না পেলে কনফিউজড
             return;
         }
 
-        const location = geoData.results[0];
-        const lat = location.latitude;
-        const lon = location.longitude;
-        const timezone = location.timezone;
-        const displayName = location.name;
+        const { latitude, longitude, timezone, name } = geoData.results[0];
+        const validTimezone = timezone || 'UTC';
 
-        // ২. Latitude ও Longitude দিয়ে লাইভ ওয়েদার ডেটা আনা
-        const weatherResponse = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weather_code,wind_speed_10m&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=${timezone}`);
-        const weatherData = await weatherResponse.json();
+        const weatherRes = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,apparent_temperature,weather_code,wind_speed_10m&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=${validTimezone}`);
+        const weatherData = await weatherRes.json();
 
         const current = weatherData.current;
         const daily = weatherData.daily;
 
-        // ৩. UI আপডেট করা (শহরের নাম)
-        document.getElementById('city-name').innerText = displayName;
-
-        // ৪. ওই শহরের লোকাল টাইম এবং তারিখ বের করা
-        const now = new Date();
-        const timeOptions = { hour: '2-digit', minute: '2-digit', timeZone: timezone };
-        const dateOptions = { weekday: 'long', day: 'numeric', month: 'long', timeZone: timezone };
-
-        const localTime = now.toLocaleTimeString('en-US', timeOptions);
-        let localDate = now.toLocaleDateString('en-GB', dateOptions).replace(' ', '—');
-
-        document.getElementById('local-time').innerText = localTime;
-        document.getElementById('current-date').innerText = localDate + ".";
-
-        // ৫. তাপমাত্রা, বাতাস এবং বৃষ্টির সম্ভাবনা
+        document.getElementById('city-name').innerText = name;
         document.getElementById('temp').innerText = Math.round(current.temperature_2m) + "°";
         document.getElementById('temp-range').innerText = Math.round(daily.temperature_2m_max[0]) + "°—" + Math.round(daily.temperature_2m_min[0]) + "°";
         document.getElementById('wind').innerText = "Wind " + Math.round(current.wind_speed_10m) + " km/h";
-        document.getElementById('precip').innerText = "Precipitation " + daily.precipitation_probability_max[0] + "%";
+        document.getElementById('feels-like').innerText = "Feels like " + Math.round(current.apparent_temperature) + "°";
+        document.getElementById('precip').innerText = "Precip " + daily.precipitation_probability_max[0] + "%";
 
-        // ৬. ওয়েদার কোড অনুযায়ী টেক্সট পরিবর্তন (যেমন: বৃষ্টি, মেঘলা, রোদ)
+        const now = new Date();
+        const timeOptions = { hour: '2-digit', minute: '2-digit', timeZone: validTimezone };
+        const dateOptions = { weekday: 'long', day: 'numeric', month: 'long', timeZone: validTimezone };
+        document.getElementById('local-time').innerText = now.toLocaleTimeString('en-US', timeOptions);
+        document.getElementById('current-date').innerText = now.toLocaleDateString('en-GB', dateOptions).replace(' ', '—') + ".";
+
+        // ওয়েদার কোড ও টেক্সট
         const code = current.weather_code;
-        let weatherText = "Clear Sky";
-        if (code >= 1 && code <= 3) weatherText = "Partly Cloudy";
-        if (code === 45 || code === 48) weatherText = "Foggy";
-        if (code >= 51 && code <= 67) weatherText = "Yes. It's raining.";
-        if (code >= 71 && code <= 77) weatherText = "Snowing";
-        if (code >= 95) weatherText = "Thunderstorm!";
-        
-        document.getElementById('description').innerText = weatherText;
+        const temp = current.temperature_2m;
+        let desc = "Clear Sky";
+        let human = "🚶‍♂️😎"; // ডিফল্ট নরমাল আবহাওয়া
+
+        // ক্যারেক্টার ও ডেসক্রিপশন বদলানোর ম্যাজিক লজিক
+        if (code >= 51 && code <= 67) {
+            desc = "Yes. It's raining.";
+            human = "🚶‍♂️☔️"; // বৃষ্টি হলে ছাতা
+        } else if (code >= 71 && code <= 77) {
+            desc = "Snowing";
+            human = "🥶🧥❄️"; // বরফ পড়লে জ্যাকেট
+        } else if (code >= 95) {
+            desc = "Thunderstorm!";
+            human = "🏃‍♂️⛈️"; // বজ্রপাত হলে দৌড়াবে
+        } else if (code === 45 || code === 48) {
+            desc = "Foggy";
+            human = "🚶‍♂️🌫️"; // কুয়াশা
+        } else if (code >= 1 && code <= 3) {
+            desc = "Partly Cloudy";
+            human = "🚶‍♂️☁️"; // মেঘলা
+        } else {
+            // যদি আকাশ পরিষ্কার থাকে, তখন তাপমাত্রার ওপর নির্ভর করবে
+            if (temp >= 32) {
+                desc = "Hot & Sunny";
+                human = "🥵💧"; // প্রচণ্ড গরমে ঘামবে
+            } else if (temp <= 15) {
+                desc = "Cold";
+                human = "🥶🧥"; // শীতে জ্যাকেট পরবে
+            }
+        }
+
+        document.getElementById('description').innerText = desc;
+        document.getElementById('human-character').innerText = human;
 
     } catch (error) {
-        console.error("Error fetching data:", error);
-        alert("Failed to get weather data. Check your internet connection.");
+        console.error("Fetch error: ", error);
+        document.getElementById('description').innerText = "Connection Error";
+        document.getElementById('human-character').innerText = "🤦‍♂️"; // এরর হলে হতাশ
     }
 }
 
-// সার্চ আইকনে ক্লিক ইভেন্ট
 document.getElementById('search-icon').addEventListener('click', () => {
-    const userInput = prompt("Enter any City or Country Name (e.g., Tokyo, Paris, New York):");
-    if (userInput) {
-        fetchLiveWeather(userInput);
-    }
+    const city = prompt("Enter Country or City Name (e.g. Dubai, London, Moscow):");
+    if (city) fetchWeather(city);
 });
 
-// অ্যাপ লোড হলে ডিফল্টভাবে 'Dhaka' এর ওয়েদার দেখাবে
-document.addEventListener("DOMContentLoaded", () => {
-    fetchLiveWeather("Dhaka");
+document.addEventListener('DOMContentLoaded', () => {
+    fetchWeather("Dhaka");
 });
