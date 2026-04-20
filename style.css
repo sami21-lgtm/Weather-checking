@@ -8,73 +8,63 @@
 }
 
 body {
-    background-color: #f0f0f0;
+    background-color: #e0e0e0;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-}
-
-/* iPhone Frame Design */
-.iphone-frame {
-    width: 330px;
-    height: 680px;
-    background: #000;
-    border: 10px solid #1a1a1a;
-    border-radius: 50px;
-    position: relative;
-    box-shadow: 0 30px 60px rgba(0,0,0,0.4);
+    min-height: 100vh;
     overflow: hidden;
 }
 
-/* iPhone Notch */
+/* iPhone Frame */
+.iphone-frame {
+    width: 350px;
+    height: 720px;
+    background: #000;
+    border: 12px solid #1a1a1a;
+    border-radius: 50px;
+    position: relative;
+    box-shadow: 0 40px 80px rgba(0,0,0,0.5);
+    transition: all 0.3s ease;
+}
+
+/* Notch */
 .notch {
     position: absolute;
     top: 0;
     left: 50%;
     transform: translateX(-50%);
-    width: 150px;
-    height: 28px;
+    width: 160px;
+    height: 30px;
     background: #1a1a1a;
-    border-bottom-left-radius: 18px;
-    border-bottom-right-radius: 18px;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
     z-index: 10;
 }
 
-/* Screen and Gradient Background */
+/* Screen */
 .screen {
     width: 100%;
     height: 100%;
-    background: linear-gradient(180deg, #206DF9 0%, #0143B3 100%);
+    background: linear-gradient(180deg, #1e6fff 0%, #0042c1 100%);
     color: white;
-    padding: 50px 25px 20px 25px;
+    padding: 60px 25px 25px 25px;
     display: flex;
     flex-direction: column;
 }
 
-/* Header Icons */
 .header {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    font-size: 20px;
     margin-bottom: 40px;
-    font-size: 18px;
 }
 
-/* Location Content */
-.location h1 {
-    font-size: 32px;
-    font-weight: 500;
-    letter-spacing: -0.5px;
-}
+.header i { cursor: pointer; }
 
-.location .date {
-    font-size: 14px;
-    opacity: 0.8;
-    font-weight: 400;
-}
+.location h1 { font-size: 36px; font-weight: 500; }
+.location p { font-size: 15px; opacity: 0.8; margin-top: 5px; }
 
-/* Main Temperature Styling */
 .temp-display {
     flex-grow: 1;
     display: flex;
@@ -83,13 +73,11 @@ body {
 }
 
 .main-temp {
-    font-size: 120px;
+    font-size: 130px;
     font-weight: 800;
-    letter-spacing: -6px;
-    margin-left: 15px; /* Adjusting for degree symbol centering */
+    letter-spacing: -5px;
 }
 
-/* Weather Status Styling */
 .status-top {
     display: flex;
     justify-content: space-between;
@@ -97,45 +85,37 @@ body {
     margin-bottom: 25px;
 }
 
-.status-text {
-    font-size: 22px;
-    font-weight: 500;
-}
-
-.range {
-    font-size: 15px;
-    font-weight: 500;
-    opacity: 0.9;
-}
+.status-text { font-size: 24px; font-weight: 500; }
+.range { font-size: 16px; opacity: 0.9; }
 
 .status-bottom {
     display: flex;
     justify-content: space-between;
-    font-size: 13px;
-    font-weight: 400;
-    opacity: 0.8;
-    margin-bottom: 40px;
-}
-
-/* Footer & Home Indicator */
-.footer {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-}
-
-.tab {
     font-size: 14px;
-    font-weight: 500;
-    opacity: 0.9;
-    margin-bottom: 15px;
+    opacity: 0.7;
+    margin-bottom: 30px;
 }
+
+.tab { font-size: 15px; font-weight: 500; margin-bottom: 15px; }
 
 .home-indicator {
     width: 120px;
     height: 5px;
     background: white;
-    opacity: 0.4;
+    opacity: 0.3;
     border-radius: 10px;
-    align-self: center;
+    margin: 0 auto;
+}
+
+/* --- Responsive (Mobile View) --- */
+@media (max-width: 480px) {
+    body { background-color: #0042c1; }
+    .iphone-frame {
+        width: 100vw;
+        height: 100vh;
+        border: none;
+        border-radius: 0;
+    }
+    .notch { display: none; }
+    .screen { padding-top: 70px; }
 }
