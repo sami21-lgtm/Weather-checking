@@ -17,7 +17,7 @@ body { background: #e0e0e0; display: flex; justify-content: center; align-items:
 
 .screen { 
     width: 100%; height: 100%; 
-    background-image: url(sami.jpg.jpg'); 
+    background-image: url('sami.jpg'); 
     background-size: cover; background-position: center; position: relative;
     padding: 60px 20px 20px 20px; color: white; display: flex; flex-direction: column;
 }
