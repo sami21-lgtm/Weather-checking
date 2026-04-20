@@ -1,0 +1,141 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;800&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+}
+
+body {
+    background-color: #f0f0f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* iPhone Frame Design */
+.iphone-frame {
+    width: 330px;
+    height: 680px;
+    background: #000;
+    border: 10px solid #1a1a1a;
+    border-radius: 50px;
+    position: relative;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.4);
+    overflow: hidden;
+}
+
+/* iPhone Notch */
+.notch {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 150px;
+    height: 28px;
+    background: #1a1a1a;
+    border-bottom-left-radius: 18px;
+    border-bottom-right-radius: 18px;
+    z-index: 10;
+}
+
+/* Screen and Gradient Background */
+.screen {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(180deg, #206DF9 0%, #0143B3 100%);
+    color: white;
+    padding: 50px 25px 20px 25px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Header Icons */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+    font-size: 18px;
+}
+
+/* Location Content */
+.location h1 {
+    font-size: 32px;
+    font-weight: 500;
+    letter-spacing: -0.5px;
+}
+
+.location .date {
+    font-size: 14px;
+    opacity: 0.8;
+    font-weight: 400;
+}
+
+/* Main Temperature Styling */
+.temp-display {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.main-temp {
+    font-size: 120px;
+    font-weight: 800;
+    letter-spacing: -6px;
+    margin-left: 15px; /* Adjusting for degree symbol centering */
+}
+
+/* Weather Status Styling */
+.status-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 25px;
+}
+
+.status-text {
+    font-size: 22px;
+    font-weight: 500;
+}
+
+.range {
+    font-size: 15px;
+    font-weight: 500;
+    opacity: 0.9;
+}
+
+.status-bottom {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    font-weight: 400;
+    opacity: 0.8;
+    margin-bottom: 40px;
+}
+
+/* Footer & Home Indicator */
+.footer {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.tab {
+    font-size: 14px;
+    font-weight: 500;
+    opacity: 0.9;
+    margin-bottom: 15px;
+}
+
+.home-indicator {
+    width: 120px;
+    height: 5px;
+    background: white;
+    opacity: 0.4;
+    border-radius: 10px;
+    align-self: center;
+}
