@@ -47,7 +47,7 @@ body {
 .screen { 
     width: 100%; 
     height: 100%; 
-    background-image: url('sami.jpg'); /* এখানে ছবির নাম নিশ্চিত করুন */
+    background-image: url('sami.jpg.jpg'); /* এখানে ছবির নাম নিশ্চিত করুন */
     background-size: cover; 
     background-position: center; 
     position: relative;
