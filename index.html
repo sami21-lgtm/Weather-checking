@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Live Weather App Pro</title>
+    <title>Sami's Dynamic Weather App</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -12,7 +12,9 @@
     <div class="iphone-frame">
         <div class="notch"></div>
         
-        <div class="screen">
+        <div class="screen" id="weather-screen">
+            <div class="bg-overlay"></div>
+
             <header class="header">
                 <i class="fa-solid fa-bars" id="menu-icon"></i>
                 <i class="fa-solid fa-magnifying-glass" id="search-icon"></i>
@@ -20,11 +22,15 @@
 
             <main class="content">
                 <section class="location">
-                    <h1 id="city-name">Loading...</h1>
+                    <h1 id="city-name">Dhaka</h1>
                     <p class="date">
-                        <strong id="local-time" style="color: #fff;">--:--</strong> | <span id="current-date">--</span>
+                        <strong id="local-time">--:--</strong> | <span id="current-date">--</span>
                     </p>
                 </section>
+
+                <div class="scenery-display" id="scenery">
+                    ☀️
+                </div>
 
                 <div class="character-display" id="human-character">
                     🧍‍♂️
@@ -36,25 +42,25 @@
 
                 <section class="weather-status">
                     <div class="status-top">
-                        <p class="status-text" id="description">Connecting...</p>
+                        <p class="status-text" id="description">Clear Sky</p>
                         <span class="range" id="temp-range">--°—--°</span>
                     </div>
                     
                     <div class="status-bottom">
                         <span id="wind">Wind -- km/h</span>
-                        <span id="feels-like">Feels like --°</span>
+                        <span id="feels-like">Feels --°</span>
                         <span id="precip">Precip --%</span>
                     </div>
                 </section>
             </main>
 
             <footer class="footer">
-                <div class="tab">Hourly</div>
+                <div class="tab">Developer: Md. Emtiaz Hossain Sami</div>
                 <div class="home-indicator"></div>
             </footer>
         </div>
     </div>
 
-    <script src="script.js?v=2"></script>
+    <script src="script.js?v=3"></script>
 </body>
 </html>
