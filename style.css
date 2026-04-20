@@ -1,167 +1,53 @@
-/* গুগল ফন্ট ইমপোর্ট করা হলো */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;800&display=swap');
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Inter', sans-serif;
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+
+body { background-color: #e0e0e0; display: flex; justify-content: center; align-items: center; min-height: 100vh; overflow: hidden; }
+
+.iphone-frame { width: 350px; height: 720px; background: #000; border: 12px solid #1a1a1a; border-radius: 50px; position: relative; box-shadow: 0 40px 80px rgba(0,0,0,0.5); transform: scale(0.9); }
+
+.notch { position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 160px; height: 30px; background: #1a1a1a; border-bottom-left-radius: 20px; border-bottom-right-radius: 20px; z-index: 10; }
+
+.screen { width: 100%; height: 100%; background: linear-gradient(180deg, #1e6fff 0%, #0042c1 100%); color: white; padding: 60px 25px 25px 25px; display: flex; flex-direction: column; }
+
+.header { display: flex; justify-content: space-between; font-size: 22px; margin-bottom: 30px; }
+.header i { cursor: pointer; transition: transform 0.2s; }
+.header i:hover { transform: scale(1.1); }
+
+.location h1 { font-size: 34px; font-weight: 600; }
+.location p { font-size: 13px; opacity: 0.9; margin-top: 5px; }
+
+/* হিউম্যান ক্যারেক্টারের ডিজাইন ও অ্যানিমেশন */
+.character-display {
+    font-size: 65px;
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: -15px;
+    animation: float 2.5s ease-in-out infinite; /* জীবন্ত করার ম্যাজিক */
+    text-shadow: 0px 5px 15px rgba(0,0,0,0.3);
 }
 
-body {
-    background-color: #e0e0e0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    overflow: hidden;
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-8px); }
+    100% { transform: translateY(0px); }
 }
 
-/* --- iPhone Frame Design (PC View) --- */
-.iphone-frame {
-    width: 350px;
-    height: 720px;
-    background: #000;
-    border: 12px solid #1a1a1a;
-    border-radius: 50px;
-    position: relative;
-    box-shadow: 0 40px 80px rgba(0,0,0,0.5);
-    transition: all 0.3s ease;
-    
-    /* সাইজ অ্যাডজাস্ট করার জন্য (পিসিতে পুরোটা সুন্দরভাবে দেখতে) */
-    transform: scale(0.9); 
-}
+.temp-display { flex-grow: 1; display: flex; justify-content: center; align-items: center; }
+.main-temp { font-size: 100px; font-weight: 800; letter-spacing: -4px; }
 
-/* আইফোনের নচ (Notch) */
-.notch {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 160px;
-    height: 30px;
-    background: #1a1a1a;
-    border-bottom-left-radius: 20px;
-    border-bottom-right-radius: 20px;
-    z-index: 10;
-}
+.status-top { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 25px; }
+.status-text { font-size: 22px; font-weight: 500; }
+.range { font-size: 15px; opacity: 0.9; }
 
-/* মূল স্ক্রিন এবং গ্রেডিয়েন্ট নীল ব্যাকগ্রাউন্ড */
-.screen {
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(180deg, #1e6fff 0%, #0042c1 100%);
-    color: white;
-    padding: 60px 25px 25px 25px;
-    display: flex;
-    flex-direction: column;
-}
+.status-bottom { display: flex; justify-content: space-between; font-size: 12px; opacity: 0.8; margin-bottom: 30px; font-weight: 500; gap: 5px;}
 
-/* Header Icons */
-.header {
-    display: flex;
-    justify-content: space-between;
-    font-size: 20px;
-    margin-bottom: 40px;
-}
+.tab { font-size: 15px; font-weight: 500; margin-bottom: 15px; }
+.home-indicator { width: 120px; height: 5px; background: white; opacity: 0.3; border-radius: 10px; margin: 0 auto; }
 
-.header i {
-    cursor: pointer;
-    transition: transform 0.2s;
-}
-
-.header i:hover {
-    transform: scale(1.1);
-}
-
-/* Typography & Layout */
-.location h1 {
-    font-size: 36px;
-    font-weight: 500;
-}
-
-.location p {
-    font-size: 14px;
-    opacity: 0.9;
-    margin-top: 5px;
-}
-
-.temp-display {
-    flex-grow: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.main-temp {
-    font-size: 130px;
-    font-weight: 800;
-    letter-spacing: -5px;
-}
-
-.status-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    margin-bottom: 25px;
-}
-
-.status-text {
-    font-size: 24px;
-    font-weight: 500;
-}
-
-.range {
-    font-size: 16px;
-    opacity: 0.9;
-}
-
-.status-bottom {
-    display: flex;
-    justify-content: space-between;
-    font-size: 14px;
-    opacity: 0.7;
-    margin-bottom: 30px;
-}
-
-/* Footer Tab */
-.tab {
-    font-size: 15px;
-    font-weight: 500;
-    margin-bottom: 15px;
-}
-
-/* iPhone Home Indicator (নিচের সাদা দাগ) */
-.home-indicator {
-    width: 120px;
-    height: 5px;
-    background: white;
-    opacity: 0.3;
-    border-radius: 10px;
-    margin: 0 auto;
-}
-
-
-/* --- Responsive Design (Mobile View) --- */
-/* যখন স্ক্রিনের সাইজ ৪৮০ পিক্সেলের কম হবে (অর্থাৎ মোবাইলে) */
 @media (max-width: 480px) {
-    body {
-        background-color: #0042c1;
-    }
-    
-    .iphone-frame {
-        width: 100vw;       /* স্ক্রিনের পুরো চওড়া */
-        height: 100vh;      /* স্ক্রিনের পুরো উচ্চতা */
-        border: none;       /* বর্ডার মুছে ফেলা হলো */
-        border-radius: 0;   /* রাউন্ড শেপ বাদ দেওয়া হলো */
-        transform: scale(1); /* মোবাইলে জুম-আউট করার দরকার নেই */
-    }
-    
-    .notch {
-        display: none;      /* মোবাইলে আমাদের বানানো নচ লুকানো হলো */
-    }
-    
-    .screen {
-        padding-top: 70px;
-    }
+    body { background-color: #0042c1; }
+    .iphone-frame { width: 100vw; height: 100vh; border: none; border-radius: 0; transform: scale(1); }
+    .notch { display: none; }
+    .screen { padding-top: 70px; }
 }
