@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>iPhone Weather App UI</title>
+    <title>Dynamic Weather App</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -14,28 +14,28 @@
         
         <div class="screen">
             <header class="header">
-                <i class="fa-solid fa-bars-staggered"></i>
-                <i class="fa-solid fa-magnifying-glass"></i>
+                <i class="fa-solid fa-bars-staggered" id="menu-icon"></i>
+                <i class="fa-solid fa-magnifying-glass" id="search-icon"></i>
             </header>
 
             <main class="content">
                 <section class="location">
-                    <h1>London</h1>
-                    <p class="date">Wednesday—29 May.</p>
+                    <h1 id="city-name">London</h1>
+                    <p class="date" id="current-date">Wednesday—29 May.</p>
                 </section>
 
                 <section class="temp-display">
-                    <h2 class="main-temp">13°</h2>
+                    <h2 class="main-temp" id="temp">13°</h2>
                 </section>
 
                 <section class="weather-status">
                     <div class="status-top">
-                        <p class="status-text">Yes. It's raining.</p>
-                        <span class="range">17°—14°</span>
+                        <p class="status-text" id="description">Yes. It's raining.</p>
+                        <span class="range" id="temp-range">17°—14°</span>
                     </div>
                     <div class="status-bottom">
-                        <span>Wind 16 km/h</span>
-                        <span>Precipitation 55%</span>
+                        <span id="wind">Wind 16 km/h</span>
+                        <span id="precip">Precipitation 55%</span>
                     </div>
                 </section>
             </main>
