@@ -35,7 +35,7 @@ body {
     width: 100%; height: 100%; 
     position: relative;
     /* এখানে আপনার ছবির নাম দিন */
-    background-image: url('sami.jpg'); 
+    background-image: url('sami.jpg.jpg'); 
     background-size: cover;
     background-position: center;
     color: white; 
