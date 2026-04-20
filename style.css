@@ -2,7 +2,7 @@
 
 * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
 
-body { background: #e0e0e0; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+body { background: #e0e0e0; display: flex; justify-content: center; align-items: center; min-height: 100vh; overflow: hidden; }
 
 .iphone-frame { 
     width: 360px; height: 740px; background: #000; border: 12px solid #1a1a1a; 
@@ -16,36 +16,51 @@ body { background: #e0e0e0; display: flex; justify-content: center; align-items:
 }
 
 .screen { 
-    width: 100%; height: 100%; background-image: url('sami.jpg.jpg'); 
+    width: 100%; height: 100%; 
+    background-image: url('sami.jpg'); 
     background-size: cover; background-position: center; position: relative;
     padding: 60px 20px 20px 20px; color: white; display: flex; flex-direction: column;
 }
 
 .bg-overlay {
     position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    /* আপনার ফেসের ওপর পরিষ্কার আলো রাখার লজিক */
     background: radial-gradient(circle at 50% 28%, transparent 15%, rgba(0,0,0,0.6) 85%);
     z-index: 1;
 }
 
 .screen > * { position: relative; z-index: 2; }
 
-.location-top { text-align: left; margin-bottom: 20px; }
-.location-top h1 { font-size: 35px; font-weight: 800; }
-.location-top p { font-size: 14px; line-height: 1.4; opacity: 0.9; }
+.header { display: flex; justify-content: space-between; font-size: 22px; margin-bottom: 10px; }
 
-.camera-section { text-align: center; position: relative; margin: 10px 0; min-height: 100px;}
+.location-top h1 { font-size: 35px; font-weight: 800; text-shadow: 2px 2px 10px rgba(0,0,0,0.5); }
+.location-top p { font-size: 14px; opacity: 0.9; font-weight: 500; }
+
+.camera-section { text-align: center; position: relative; margin: 10px 0; min-height: 100px; }
 #camera-stream { 
     width: 90px; height: 90px; border-radius: 50%; object-fit: cover; 
     border: 3px solid white; margin: 0 auto; display: none; 
 }
 
-.scenery-display { font-size: 30px; position: absolute; right: 20%; top: 0; }
+.character-display { font-size: 55px; animation: float 2.5s ease-in-out infinite; }
+.scenery-display { font-size: 30px; position: absolute; right: 15%; top: 0; filter: drop-shadow(0 0 10px gold); }
+
+@keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-10px); } 100% { transform: translateY(0px); } }
 
 .temp-main { flex-grow: 1; text-align: center; display: flex; flex-direction: column; justify-content: center; }
-.temp-main h2 { font-size: 100px; font-weight: 800; margin-bottom: -10px; }
+.temp-main h2 { font-size: 100px; font-weight: 800; letter-spacing: -4px; text-shadow: 2px 2px 15px rgba(0,0,0,0.5); }
 
-.info-grid { display: flex; justify-content: space-between; font-size: 12px; font-weight: 600; padding: 15px 10px; background: rgba(255,255,255,0.1); backdrop-filter: blur(5px); border-radius: 15px; margin-bottom: 10px;}
+.info-grid { 
+    display: flex; justify-content: space-between; font-size: 11px; font-weight: 600; 
+    padding: 15px 10px; background: rgba(255,255,255,0.15); backdrop-filter: blur(8px); 
+    border-radius: 20px; margin-bottom: 10px;
+}
 
 .footer { text-align: center; padding-bottom: 10px; }
 .dev-tag { font-size: 10px; opacity: 0.7; }
 .home-line { width: 100px; height: 4px; background: white; margin: 10px auto 0; border-radius: 10px; opacity: 0.5; }
+
+@media (max-width: 480px) {
+    .iphone-frame { width: 100vw; height: 100vh; border: none; border-radius: 0; transform: scale(1); }
+    .notch { display: none; }
+}
