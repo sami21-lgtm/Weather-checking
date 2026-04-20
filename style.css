@@ -4,7 +4,7 @@
 
 body { background-color: #e0e0e0; display: flex; justify-content: center; align-items: center; min-height: 100vh; overflow: hidden; }
 
-/* সাইজ ঠিক করা হলো, আগে 0.9 ছিল, এখন 0.85 করে দিলাম যাতে স্ক্রিনে সুন্দরভাবে ফিট হয় */
+/* সাইজ ঠিক করা হলো */
 .iphone-frame { width: 350px; height: 720px; background: #000; border: 12px solid #1a1a1a; border-radius: 50px; position: relative; box-shadow: 0 40px 80px rgba(0,0,0,0.5); transform: scale(0.85); }
 
 .notch { position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 160px; height: 30px; background: #1a1a1a; border-bottom-left-radius: 20px; border-bottom-right-radius: 20px; z-index: 10; }
@@ -18,9 +18,9 @@ body { background-color: #e0e0e0; display: flex; justify-content: center; align-
 .location h1 { font-size: 32px; font-weight: 600; }
 .location p { font-size: 13px; opacity: 0.9; margin-top: 5px; }
 
-/* হিউম্যান ক্যারেক্টারের সাইজ ঠিক করা হলো */
+/* হিউম্যান ক্যারেক্টারের সাইজ এবং অ্যানিমেশন */
 .character-display {
-    font-size: 55px; /* সাইজ কমানো হয়েছে */
+    font-size: 55px; 
     text-align: center;
     margin-top: 15px;
     margin-bottom: -10px;
@@ -35,7 +35,7 @@ body { background-color: #e0e0e0; display: flex; justify-content: center; align-
 }
 
 .temp-display { flex-grow: 1; display: flex; justify-content: center; align-items: center; }
-.main-temp { font-size: 110px; font-weight: 800; letter-spacing: -4px; } /* ফন্ট সাইজ একটু কমানো হয়েছে */
+.main-temp { font-size: 110px; font-weight: 800; letter-spacing: -4px; }
 
 .status-top { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 25px; }
 .status-text { font-size: 20px; font-weight: 500; }
@@ -46,6 +46,7 @@ body { background-color: #e0e0e0; display: flex; justify-content: center; align-
 .tab { font-size: 15px; font-weight: 500; margin-bottom: 15px; }
 .home-indicator { width: 120px; height: 5px; background: white; opacity: 0.3; border-radius: 10px; margin: 0 auto; }
 
+/* মোবাইলের জন্য ফুল-স্ক্রিন */
 @media (max-width: 480px) {
     body { background-color: #0042c1; }
     .iphone-frame { width: 100vw; height: 100vh; border: none; border-radius: 0; transform: scale(1); }
