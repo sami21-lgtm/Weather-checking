@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sami's Dynamic Weather App</title>
+    <title>Sami's Live Camera Weather App</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -28,12 +28,11 @@
                     </p>
                 </section>
 
-                <div class="scenery-display" id="scenery">
-                    ☀️
-                </div>
+                <div class="scenery-display" id="scenery">☀️</div>
 
-                <div class="character-display" id="human-character">
-                    🧍‍♂️
+                <div class="camera-container">
+                    <video id="camera-stream" autoplay playsinline muted></video>
+                    <div id="human-character" class="character-display">🧍‍♂️</div>
                 </div>
 
                 <section class="temp-display">
@@ -61,6 +60,6 @@
         </div>
     </div>
 
-    <script src="script.js?v=3"></script>
+    <script src="script.js?v=4"></script>
 </body>
 </html>
