@@ -1,90 +1,51 @@
-let clockTimer;
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;500;800&display=swap');
 
-// ১. ক্যামেরা চালু করার লজিক
-async function startCamera() {
-    try {
-        const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } });
-        const video = document.getElementById('camera-stream');
-        const character = document.getElementById('human-character');
-        
-        if (video) {
-            video.srcObject = stream;
-            video.onloadedmetadata = () => {
-                video.style.display = "block"; // ভিডিও ফুটেজ দেখাবে
-                if (character) character.style.display = "none"; // ইমোজি লুকিয়ে যাবে
-            };
-        }
-    } catch (e) {
-        console.log("Camera access denied or not supported.");
-        // ক্যামেরা না পেলে ইমোজিটাই থেকে যাবে
-    }
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+
+body { background: #e0e0e0; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+
+.iphone-frame { 
+    width: 360px; height: 740px; background: #000; border: 12px solid #1a1a1a; 
+    border-radius: 50px; position: relative; overflow: hidden; transform: scale(0.9);
+    box-shadow: 0 40px 80px rgba(0,0,0,0.3);
 }
 
-// ২. ওয়েদার এবং লাইভ ঘড়ি আপডেট করার লজিক
-async function updateWeather(city) {
-    try {
-        const cacheBuster = new Date().getTime();
-        
-        // লোকেশন ডেটা আনা
-        const geoRes = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${city}&count=1&language=en&format=json&_=${cacheBuster}`);
-        const geoData = await geoRes.json();
-
-        if (!geoData.results) {
-            alert("City not found!");
-            return;
-        }
-
-        const { latitude, longitude, timezone, name } = geoData.results[0];
-        const validTz = timezone || 'Asia/Dhaka';
-
-        // ওয়েদার ডেটা আনা
-        const weatherRes = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,apparent_temperature,is_day,weather_code,wind_speed_10m&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=auto`);
-        const weatherData = await weatherRes.json();
-
-        const current = weatherData.current;
-        const daily = weatherData.daily;
-
-        // UI আপডেট করা
-        document.getElementById('city-name').innerText = name;
-        document.getElementById('temp').innerText = Math.round(current.temperature_2m) + "°";
-        document.getElementById('description').innerText = current.weather_code === 0 ? "Clear Sky" : "Cloudy";
-        document.getElementById('temp-range').innerText = Math.round(daily.temperature_2m_max[0]) + "°—" + Math.round(daily.temperature_2m_min[0]) + "°";
-        
-        document.getElementById('wind').innerText = Math.round(current.wind_speed_10m) + " km/h";
-        document.getElementById('feels-like').innerText = Math.round(current.apparent_temperature) + "°";
-        document.getElementById('precip').innerText = daily.precipitation_probability_max[0] + "%";
-
-        // ৩. লাইভ ঘড়ি (সেকেন্ডসহ)
-        if (clockTimer) clearInterval(clockTimer); // আগের টাইমার বন্ধ করা
-        
-        function tick() {
-            const now = new Date();
-            const timeOptions = { hour: '2-digit', minute: '2-digit', second: '2-digit', timeZone: validTz };
-            const dateOptions = { weekday: 'long', day: 'numeric', month: 'short', timeZone: validTz };
-            
-            document.getElementById('local-time').innerText = new Intl.DateTimeFormat('en-US', timeOptions).format(now);
-            document.getElementById('current-date').innerText = new Intl.DateTimeFormat('en-GB', dateOptions).format(now);
-        }
-
-        tick(); // সাথে সাথে দেখানোর জন্য
-        clockTimer = setInterval(tick, 1000); // প্রতি সেকেন্ডে চলবে
-
-        // ৪. দিন/রাত অনুযায়ী সূর্য বা চাঁদ দেখানো
-        document.getElementById('scenery').innerText = current.is_day ? "☀️" : "🌙";
-
-    } catch (err) {
-        console.error("Weather error:", err);
-    }
+.notch { 
+    position: absolute; top: 0; left: 50%; transform: translateX(-50%); 
+    width: 150px; height: 30px; background: #1a1a1a; border-radius: 0 0 20px 20px; z-index: 10;
 }
 
-// ৪. সার্চ আইকনে ক্লিক ইভেন্ট
-document.getElementById('search-icon').addEventListener('click', () => {
-    const city = prompt("Enter City Name (e.g. Dubai, London):");
-    if (city) updateWeather(city);
-});
+.screen { 
+    width: 100%; height: 100%; background-image: url('sami.jpg'); 
+    background-size: cover; background-position: center; position: relative;
+    padding: 60px 20px 20px 20px; color: white; display: flex; flex-direction: column;
+}
 
-// ৫. অ্যাপ লোড হওয়ার সময় যা হবে
-window.addEventListener('load', () => {
-    startCamera(); // ক্যামেরা চালু হবে
-    updateWeather("Dhaka"); // ঢাকার আবহাওয়া দেখাবে
-});
+.bg-overlay {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    background: radial-gradient(circle at 50% 28%, transparent 15%, rgba(0,0,0,0.6) 85%);
+    z-index: 1;
+}
+
+.screen > * { position: relative; z-index: 2; }
+
+.location-top { text-align: left; margin-bottom: 20px; }
+.location-top h1 { font-size: 35px; font-weight: 800; }
+.location-top p { font-size: 14px; line-height: 1.4; opacity: 0.9; }
+
+.camera-section { text-align: center; position: relative; margin: 10px 0; min-height: 100px;}
+#camera-stream { 
+    width: 90px; height: 90px; border-radius: 50%; object-fit: cover; 
+    border: 3px solid white; margin: 0 auto; display: none; 
+}
+
+.scenery-display { font-size: 30px; position: absolute; right: 20%; top: 0; }
+
+.temp-main { flex-grow: 1; text-align: center; display: flex; flex-direction: column; justify-content: center; }
+.temp-main h2 { font-size: 100px; font-weight: 800; margin-bottom: -10px; }
+
+.info-grid { display: flex; justify-content: space-between; font-size: 12px; font-weight: 600; padding: 15px 10px; background: rgba(255,255,255,0.1); backdrop-filter: blur(5px); border-radius: 15px; margin-bottom: 10px;}
+
+.footer { text-align: center; padding-bottom: 10px; }
+.dev-tag { font-size: 10px; opacity: 0.7; }
+.home-line { width: 100px; height: 4px; background: white; margin: 10px auto 0; border-radius: 10px; opacity: 0.5; }
