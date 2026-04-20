@@ -14,17 +14,21 @@
         
         <div class="screen">
             <header class="header">
-                <i class="fa-solid fa-bars-staggered" id="menu-icon"></i>
+                <i class="fa-solid fa-bars" id="menu-icon"></i>
                 <i class="fa-solid fa-magnifying-glass" id="search-icon"></i>
             </header>
 
             <main class="content">
                 <section class="location">
-                    <h1 id="city-name">Dhaka</h1>
+                    <h1 id="city-name">Loading...</h1>
                     <p class="date">
-                        <strong id="local-time" style="color: #fff;">10:30 PM</strong> | <span id="current-date">Wednesday—29 May.</span>
+                        <strong id="local-time" style="color: #fff;">--:--</strong> | <span id="current-date">--</span>
                     </p>
                 </section>
+
+                <div class="character-display" id="human-character">
+                    🧍‍♂️
+                </div>
 
                 <section class="temp-display">
                     <h2 class="main-temp" id="temp">--°</h2>
@@ -32,12 +36,14 @@
 
                 <section class="weather-status">
                     <div class="status-top">
-                        <p class="status-text" id="description">Loading...</p>
+                        <p class="status-text" id="description">Fetching weather...</p>
                         <span class="range" id="temp-range">--°—--°</span>
                     </div>
+                    
                     <div class="status-bottom">
                         <span id="wind">Wind -- km/h</span>
-                        <span id="precip">Precipitation --%</span>
+                        <span id="feels-like">Feels like --°</span>
+                        <span id="precip">Precip --%</span>
                     </div>
                 </section>
             </main>
