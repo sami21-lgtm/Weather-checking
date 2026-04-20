@@ -1,68 +1,68 @@
-document.addEventListener("DOMContentLoaded", () => {
-    const searchIcon = document.getElementById('search-icon');
+// একদম সেফ লজিক, যাতে কোনোভাবেই আটকে না থাকে
+window.onload = async function() {
     const cityDisplay = document.getElementById('city-name');
     const descDisplay = document.getElementById('description');
     const humanDisplay = document.getElementById('human-character');
 
-    async function fetchWeather(city) {
+    // যদি ফাইলে কোনো হিডেন এরর থাকে, তবে সেটা স্ক্রিনে দেখাবে
+    window.onerror = function() {
+        cityDisplay.innerText = "JS Error!";
+        descDisplay.innerText = "Check your code";
+        humanDisplay.innerText = "💀";
+    };
+
+    async function getWeather(city) {
         try {
-            // লোডিং শুরু
-            cityDisplay.innerText = "Loading...";
-            descDisplay.innerText = "Connecting API...";
-            humanDisplay.innerText = "🚶‍♂️🔍";
+            // খোঁজা শুরু হচ্ছে
+            cityDisplay.innerText = "Fetching...";
+            descDisplay.innerText = "Please wait...";
+            humanDisplay.innerText = "🏃‍♂️";
 
-            // গিটহাবের ক্যাশ ফাঁকি দেওয়ার ট্রিক (URL এর শেষে র‍্যান্ডম টাইম)
-            const noCache = new Date().getTime();
-            const geoUrl = `https://geocoding-api.open-meteo.com/v1/search?name=${city}&count=1&language=en&format=json&_=${noCache}`;
-            
-            const geoRes = await fetch(geoUrl);
-            if (!geoRes.ok) throw new Error("API Blocked by Browser");
-            
-            const geoData = await geoRes.json();
+            // ১. লোকেশন বের করা
+            const url1 = `https://geocoding-api.open-meteo.com/v1/search?name=${city}&count=1&language=en&format=json`;
+            const res1 = await fetch(url1);
+            const data1 = await res1.json();
 
-            if (!geoData.results) {
+            if (!data1.results || data1.results.length === 0) {
                 cityDisplay.innerText = "Not Found";
                 descDisplay.innerText = "Check Spelling";
                 humanDisplay.innerText = "🤷‍♂️";
                 return;
             }
 
-            const { latitude, longitude, timezone, name } = geoData.results[0];
+            const { latitude, longitude, timezone, name } = data1.results[0];
+            const tz = timezone || 'Asia/Dhaka';
 
-            // ওয়েদার ফেচ করা
-            const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,apparent_temperature,weather_code,wind_speed_10m&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=auto&_=${noCache}`;
-            
-            const weatherRes = await fetch(weatherUrl);
-            if (!weatherRes.ok) throw new Error("Weather Data Blocked");
-            
-            const weatherData = await weatherRes.json();
-            const current = weatherData.current;
-            const daily = weatherData.daily;
+            // ২. ওয়েদার ডেটা আনা
+            const url2 = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,apparent_temperature,weather_code,wind_speed_10m&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=${tz}`;
+            const res2 = await fetch(url2);
+            const data2 = await res2.json();
 
-            // UI আপডেট
+            const cur = data2.current;
+            const day = data2.daily;
+
+            // ৩. স্ক্রিনে ডেটা বসানো
             cityDisplay.innerText = name;
-            document.getElementById('temp').innerText = Math.round(current.temperature_2m) + "°";
+            document.getElementById('temp').innerText = Math.round(cur.temperature_2m) + "°";
             
-            const maxT = daily.temperature_2m_max ? Math.round(daily.temperature_2m_max[0]) : '--';
-            const minT = daily.temperature_2m_min ? Math.round(daily.temperature_2m_min[0]) : '--';
+            const maxT = day.temperature_2m_max ? Math.round(day.temperature_2m_max[0]) : '--';
+            const minT = day.temperature_2m_min ? Math.round(day.temperature_2m_min[0]) : '--';
             document.getElementById('temp-range').innerText = `${maxT}°—${minT}°`;
             
-            document.getElementById('wind').innerText = "Wind " + Math.round(current.wind_speed_10m) + " km/h";
-            document.getElementById('feels-like').innerText = "Feels like " + Math.round(current.apparent_temperature) + "°";
-            
-            const precip = daily.precipitation_probability_max ? daily.precipitation_probability_max[0] : 0;
+            document.getElementById('wind').innerText = "Wind " + Math.round(cur.wind_speed_10m) + " km/h";
+            document.getElementById('feels-like').innerText = "Feels like " + Math.round(cur.apparent_temperature) + "°";
+            const precip = day.precipitation_probability_max ? day.precipitation_probability_max[0] : 0;
             document.getElementById('precip').innerText = "Precip " + precip + "%";
 
-            // সময়
-            const validTz = timezone || Intl.DateTimeFormat().resolvedOptions().timeZone;
+            // ৪. টাইম আপডেট
             const now = new Date();
-            document.getElementById('local-time').innerText = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', timeZone: validTz });
-            document.getElementById('current-date').innerText = now.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', timeZone: validTz }).replace(' ', '—') + ".";
+            document.getElementById('local-time').innerText = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', timeZone: tz });
+            document.getElementById('current-date').innerText = now.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', timeZone: tz }).replace(' ', '—') + ".";
 
-            // ইমোজি লজিক
-            const code = current.weather_code;
-            const temp = current.temperature_2m;
-            let desc = "Clear Sky";
+            // ৫. ইমোজি ম্যাজিক
+            const code = cur.weather_code;
+            const temp = cur.temperature_2m;
+            let desc = "Clear Sky"; 
             let human = "🚶‍♂️😎";
 
             if (code >= 51 && code <= 67) { desc = "It's raining."; human = "🚶‍♂️☔️"; } 
@@ -78,19 +78,20 @@ document.addEventListener("DOMContentLoaded", () => {
             descDisplay.innerText = desc;
             humanDisplay.innerText = human;
 
-        } catch (error) {
-            // যদি এবারও কাজ না করে, আপনার স্ক্রিনেই এরর মেসেজ দেখাবে!
-            cityDisplay.innerText = "Error!";
-            descDisplay.innerText = error.message;
-            humanDisplay.innerText = "🛠️";
+        } catch (err) {
+            // যদি ইন্টারনেট বা API সমস্যা করে
+            cityDisplay.innerText = "Network Error";
+            descDisplay.innerText = "API Blocked";
+            humanDisplay.innerText = "🚫";
         }
     }
 
-    searchIcon.addEventListener('click', () => {
-        const city = prompt("Enter City Name (e.g. Dhaka):");
-        if (city) fetchWeather(city);
-    });
+    // সার্চ বাটনের কাজ
+    document.getElementById('search-icon').onclick = function() {
+        const city = prompt("Enter City Name (e.g. Dubai):");
+        if (city) getWeather(city);
+    };
 
-    // অ্যাপ লোড হলেই ঢাকার ওয়েদার কল করবে
-    fetchWeather("Dhaka");
-});
+    // শুরুতে ঢাকার ওয়েদার লোড হবে
+    getWeather("Dhaka");
+};
