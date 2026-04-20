@@ -1,95 +1,192 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;500;800&display=swap');
 
-* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+/* বেসিক রিসেট */
+* { 
+    margin: 0; 
+    padding: 0; 
+    box-sizing: border-box; 
+    font-family: 'Inter', sans-serif; 
+}
 
+/* ব্যাকগ্রাউন্ড বডি */
 body { 
-    background-color: #d1d8e0; 
+    background: #e0e0e0; 
     display: flex; 
     justify-content: center; 
     align-items: center; 
     min-height: 100vh; 
-    overflow: hidden; 
 }
 
+/* আইফোন ফ্রেম ডিজাইন */
 .iphone-frame { 
-    width: 350px; height: 720px; 
+    width: 360px; 
+    height: 740px; 
     background: #000; 
     border: 12px solid #1a1a1a; 
-    border-radius: 45px; 
+    border-radius: 50px; 
     position: relative; 
-    box-shadow: 0 40px 80px rgba(0,0,0,0.5); 
-    transform: scale(0.85); 
     overflow: hidden; 
+    transform: scale(0.9);
+    box-shadow: 0 40px 80px rgba(0,0,0,0.3);
 }
 
+/* আইফোনের নচ */
 .notch { 
-    position: absolute; top: 0; left: 50%; 
+    position: absolute; 
+    top: 0; 
+    left: 50%; 
     transform: translateX(-50%); 
-    width: 160px; height: 30px; 
+    width: 150px; 
+    height: 30px; 
     background: #1a1a1a; 
-    border-bottom-left-radius: 20px; border-bottom-right-radius: 20px; 
-    z-index: 20; 
+    border-radius: 0 0 20px 20px; 
+    z-index: 10;
 }
 
+/* মূল স্ক্রিন (আপনার ছবি এখানে সেট হবে) */
 .screen { 
-    width: 100%; height: 100%; 
+    width: 100%; 
+    height: 100%; 
+    background-image: url('sami.jpg'); /* এখানে ছবির নাম নিশ্চিত করুন */
+    background-size: cover; 
+    background-position: center; 
     position: relative;
-    /* এখানে আপনার ছবির নাম দিন */
-    background-image: url('sami.jpg.jpg'); 
-    background-size: cover;
-    background-position: center;
+    padding: 60px 20px 20px 20px; 
     color: white; 
-    padding: 60px 25px 25px 25px; 
-    display: flex; flex-direction: column; 
-    transition: all 1s ease;
+    display: flex; 
+    flex-direction: column;
 }
 
-/* ছবির ওপর হালকা আবছায়া পর্দা যাতে লেখা বোঝা যায় */
+/* ফেসের ওপর থেকে শ্যাডো সরানোর ম্যাজিক ওভারলে */
 .bg-overlay {
-    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0, 0, 0, 0.3); /* ছবির ওপর কালো শ্যাডো */
+    position: absolute; 
+    top: 0; 
+    left: 0; 
+    width: 100%; 
+    height: 100%;
+    /* circle at 50% 28% আপনার ফেসের পজিশন অনুযায়ী মাঝখানটা পরিষ্কার রাখবে */
+    background: radial-gradient(circle at 50% 28%, transparent 12%, rgba(0,0,0,0.6) 85%);
     z-index: 1;
 }
 
-.screen > * { position: relative; z-index: 5; } /* সব এলিমেন্ট পর্দার ওপরে থাকবে */
-
-/* দিন/রাত অনুযায়ী ডাইনামিক ক্লাস (JS দিয়ে পরিবর্তন হবে) */
-.day-bg { background-color: rgba(30, 111, 255, 0.4); }
-.night-bg { background-color: rgba(0, 15, 64, 0.7); }
-
-.header { display: flex; justify-content: space-between; font-size: 22px; margin-bottom: 20px; }
-.header i { cursor: pointer; }
-
-.location h1 { font-size: 32px; font-weight: 600; }
-.location p { font-size: 13px; opacity: 0.9; }
-
-/* সিনারি (চাঁদ/সূর্য) */
-.scenery-display {
-    font-size: 40px;
-    text-align: right;
-    margin-top: -10px;
-    filter: drop-shadow(0 0 10px gold);
+/* সব কন্টেন্ট যাতে ওভারলের ওপরে থাকে */
+.screen > * { 
+    position: relative; 
+    z-index: 2; 
 }
 
-.character-display { 
-    font-size: 55px; text-align: center; margin-top: 10px;
-    animation: float 2.5s ease-in-out infinite; 
+/* ডেট এবং সিটির পজিশন (আপনার ফেসের পাশে) */
+.location-top { 
+    text-align: left; 
+    margin-bottom: 20px; 
 }
 
-@keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-10px); } 100% { transform: translateY(0px); } }
+.location-top h1 { 
+    font-size: 35px; 
+    font-weight: 800; 
+    text-shadow: 2px 2px 10px rgba(0,0,0,0.3);
+}
 
-.temp-display { flex-grow: 1; display: flex; justify-content: center; align-items: center; }
-.main-temp { font-size: 110px; font-weight: 800; letter-spacing: -4px; text-shadow: 2px 2px 10px rgba(0,0,0,0.5); }
+.location-top p { 
+    font-size: 14px; 
+    line-height: 1.4; 
+    opacity: 0.9; 
+    font-weight: 500; 
+    text-shadow: 1px 1px 5px rgba(0,0,0,0.3);
+}
 
-.status-top { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 25px; }
-.status-text { font-size: 20px; font-weight: 500; }
+/* ক্যামেরা সেকশন */
+.camera-section { 
+    text-align: center; 
+    position: relative; 
+    margin: 10px 0; 
+}
 
-.status-bottom { display: flex; justify-content: space-between; font-size: 11px; opacity: 0.9; margin-bottom: 30px; font-weight: 600; }
+#camera-stream { 
+    width: 90px; 
+    height: 90px; 
+    border-radius: 50%; 
+    object-fit: cover; 
+    border: 3px solid white; 
+    margin: 0 auto; 
+    display: none; /* JS ক্যামেরা চালু করলে এটি দেখাবে */
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
+}
 
-.tab { font-size: 12px; opacity: 0.7; text-align: center; margin-bottom: 10px; }
-.home-indicator { width: 100px; height: 4px; background: white; opacity: 0.5; border-radius: 10px; margin: 0 auto; }
+/* ইমোজি/সিনারি ডিসপ্লে */
+.character-display {
+    font-size: 55px;
+    margin-bottom: 10px;
+}
 
+.scenery-display { 
+    font-size: 30px; 
+    position: absolute; 
+    right: 20%; 
+    top: 0; 
+    filter: drop-shadow(0 0 10px rgba(255,255,255,0.5));
+}
+
+/* মেইন তাপমাত্রা ডিসপ্লে */
+.temp-main { 
+    flex-grow: 1; 
+    text-align: center; 
+    display: flex; 
+    flex-direction: column; 
+    justify-content: center; 
+}
+
+.temp-main h2 { 
+    font-size: 100px; 
+    font-weight: 800; 
+    margin-bottom: -10px; 
+    letter-spacing: -4px;
+    text-shadow: 2px 2px 15px rgba(0,0,0,0.4);
+}
+
+/* নিচের ইনফরমেশন গ্রিড */
+.info-grid { 
+    display: flex; 
+    justify-content: space-between; 
+    font-size: 12px; 
+    font-weight: 600; 
+    padding: 20px 5px; 
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(5px);
+    border-radius: 20px;
+    margin-bottom: 15px;
+}
+
+/* ফুটার সেকশন */
+.footer { 
+    text-align: center; 
+    padding-bottom: 10px; 
+}
+
+.dev-tag { 
+    font-size: 10px; 
+    opacity: 0.7; 
+    margin-bottom: 10px; 
+    letter-spacing: 1px;
+}
+
+.home-line { 
+    width: 100px; 
+    height: 4px; 
+    background: white; 
+    margin: 0 auto; 
+    border-radius: 10px; 
+    opacity: 0.5; 
+}
+
+/* মোবাইল রেস্পন্সিভ */
 @media (max-width: 480px) {
-    .iphone-frame { width: 100vw; height: 100vh; border: none; border-radius: 0; transform: scale(1); }
+    .iphone-frame {
+        width: 100vw;
+        height: 100vh;
+        border: none;
+        border-radius: 0;
+        transform: scale(1);
+    }
     .notch { display: none; }
 }
