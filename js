@@ -1,10 +1,9 @@
 async function fetchWeather(city) {
     try {
-        // লোডিং শুরু
         document.getElementById('description').innerText = "Connecting API...";
         document.getElementById('human-character').innerText = "🚶‍♂️🔍"; 
 
-        // ১. Geocoding API (শহরের লোকেশন বের করা)
+        // ১. শহরের লোকেশন বের করা
         const geoUrl = `https://geocoding-api.open-meteo.com/v1/search?name=${city}&count=1&language=en&format=json`;
         const geoRes = await fetch(geoUrl);
         const geoData = await geoRes.json();
@@ -18,7 +17,7 @@ async function fetchWeather(city) {
 
         const { latitude, longitude, timezone, name } = geoData.results[0];
 
-        // ২. Weather API (timezone=auto ব্যবহার করে গিটহাবের সমস্যা সমাধান)
+        // ২. Weather API (timezone=auto ব্যবহার করে সেফ করা হলো)
         const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,apparent_temperature,weather_code,wind_speed_10m&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=auto`;
         const weatherRes = await fetch(weatherUrl);
         const weatherData = await weatherRes.json();
@@ -49,7 +48,7 @@ async function fetchWeather(city) {
         document.getElementById('local-time').innerText = now.toLocaleTimeString('en-US', timeOptions);
         document.getElementById('current-date').innerText = now.toLocaleDateString('en-GB', dateOptions).replace(' ', '—') + ".";
 
-        // ৫. মানুষ এবং ওয়েদার কন্ডিশন
+        // ৫. ওয়েদার অনুযায়ী মানুষ এবং টেক্সট পরিবর্তন
         const code = current.weather_code;
         const temp = current.temperature_2m;
         let desc = "Clear Sky";
@@ -69,18 +68,20 @@ async function fetchWeather(city) {
         document.getElementById('human-character').innerText = human;
 
     } catch (error) {
-        // যদি ফেইল করে, স্ক্রিনে দেখাবে
         console.error(error);
-        document.getElementById('city-name').innerText = "API Blocked";
+        document.getElementById('city-name').innerText = "API Error";
         document.getElementById('description').innerText = "Check connection";
         document.getElementById('human-character').innerText = "🛠️";
     }
 }
 
+// সার্চ বাটনে ক্লিক করলে কাজ করবে
 document.getElementById('search-icon').addEventListener('click', () => {
-    const city = prompt("Enter Country or City Name (e.g. Dubai):");
+    const city = prompt("Enter Country or City Name (e.g. Dubai, London):");
     if (city) fetchWeather(city);
 });
 
-// পেজ লোড হলেই রান করবে
-fetchWeather("Dhaka");
+// পেজ লোড হলেই ডিফল্ট ভাবে ঢাকার ওয়েদার দেখাবে
+document.addEventListener('DOMContentLoaded', () => {
+    fetchWeather("Dhaka");
+});
