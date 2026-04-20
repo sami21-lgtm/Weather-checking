@@ -3,63 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sami's Live Camera Weather App</title>
+    <title>Sami's Premium Weather App</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-
     <div class="iphone-frame">
         <div class="notch"></div>
-        
         <div class="screen" id="weather-screen">
             <div class="bg-overlay"></div>
-
+            
             <header class="header">
-                <i class="fa-solid fa-bars" id="menu-icon"></i>
+                <i class="fa-solid fa-bars"></i>
                 <i class="fa-solid fa-magnifying-glass" id="search-icon"></i>
             </header>
 
             <main class="content">
-                <section class="location">
+                <section class="location-top">
                     <h1 id="city-name">Dhaka</h1>
                     <p class="date">
-                        <strong id="local-time">--:--</strong> | <span id="current-date">--</span>
+                        <strong id="local-time">--:--</strong><br>
+                        <span id="current-date">--</span>
                     </p>
                 </section>
 
-                <div class="scenery-display" id="scenery">☀️</div>
-
-                <div class="camera-container">
+                <div class="camera-section">
                     <video id="camera-stream" autoplay playsinline muted></video>
                     <div id="human-character" class="character-display">🧍‍♂️</div>
+                    <div class="scenery-display" id="scenery">☀️</div>
                 </div>
 
-                <section class="temp-display">
-                    <h2 class="main-temp" id="temp">--°</h2>
+                <section class="temp-main">
+                    <h2 id="temp">--°</h2>
+                    <p id="description">Clear Sky</p>
+                    <span id="temp-range">--°—--°</span>
                 </section>
 
-                <section class="weather-status">
-                    <div class="status-top">
-                        <p class="status-text" id="description">Clear Sky</p>
-                        <span class="range" id="temp-range">--°—--°</span>
-                    </div>
-                    
-                    <div class="status-bottom">
-                        <span id="wind">Wind -- km/h</span>
-                        <span id="feels-like">Feels --°</span>
-                        <span id="precip">Precip --%</span>
-                    </div>
+                <section class="info-grid">
+                    <div class="info-item">Wind: <span id="wind">--</span></div>
+                    <div class="info-item">Feels: <span id="feels-like">--</span></div>
+                    <div class="info-item">Precip: <span id="precip">--</span></div>
                 </section>
             </main>
 
             <footer class="footer">
-                <div class="tab">Developer: Md. Emtiaz Hossain Sami</div>
-                <div class="home-indicator"></div>
+                <div class="dev-tag">Dev: Md. Emtiaz Hossain Sami</div>
+                <div class="home-line"></div>
             </footer>
         </div>
     </div>
-
-    <script src="script.js?v=4"></script>
+    <script src="script.js"></script>
 </body>
 </html>
