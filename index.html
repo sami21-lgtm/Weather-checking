@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sami's iPhone 18 Pro Weather</title>
+    <title>Sami's iPhone 18 Pro</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
@@ -14,9 +14,14 @@
         <div class="screen">
             <div class="bg-overlay"></div>
             
+            <div class="search-box">
+                <input type="text" id="city-input" placeholder="Search City...">
+                <i class="fa-solid fa-magnifying-glass" id="search-btn"></i>
+            </div>
+
             <header class="location-top">
                 <p id="current-date">Tuesday, 21 April</p>
-                <div class="dynamic-clock-box">
+                <div class="clock-row">
                     <h1 id="local-time">09:41</h1>
                     <div id="scenery" class="weather-icon">☀️</div>
                 </div>
@@ -25,14 +30,14 @@
 
             <section class="temp-main">
                 <h2 id="temp">28°</h2>
-                <p id="description">Cloudy</p>
+                <p id="description">Partly Cloudy</p>
                 <span id="temp-range">36°—26°</span>
             </section>
 
-            <section class="info-grid">
-                <div>WIND: <span id="wind">--</span></div>
-                <div>FEELS: <span id="feels-like">--</span></div>
-                <div>PRECIP: <span id="precip">--</span></div>
+            <section class="info-bar">
+                <div class="info-item">WIND: <span id="wind">10 km/h</span></div>
+                <div class="info-item">FEELS: <span id="feels-like">28°</span></div>
+                <div class="info-item">PRECIP: <span id="precip">5%</span></div>
             </section>
 
             <footer class="footer">
