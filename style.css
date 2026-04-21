@@ -1,87 +1,44 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;400;500;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;400;500;700&display=swap');
 
 * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+body { background: #f0f0f0; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
 
-body { background: #e0e0e0; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+.iphone-frame { width: 360px; height: 740px; background: #000; border: 12px solid #1a1a1a; border-radius: 50px; position: relative; overflow: hidden; transform: scale(0.9); }
+.notch { position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 120px; height: 32px; background: #000; border-radius: 0 0 18px 18px; z-index: 10; }
 
-.iphone-frame { 
-    width: 360px; height: 740px; background: #000; border: 12px solid #1a1a1a; 
-    border-radius: 50px; position: relative; overflow: hidden; transform: scale(0.9);
-}
-
-.notch { 
-    position: absolute; top: 0; left: 50%; transform: translateX(-50%); 
-    width: 120px; height: 35px; background: #000; border-radius: 0 0 20px 20px; z-index: 10;
-}
-
-.screen { 
-    width: 100%; height: 100%; 
-    background-image: url('sami.jpg'); 
-    background-size: cover; background-position: center; position: relative;
-    color: white; overflow: hidden;
-}
-
-/* আপনার ফেসের ওখানে লেখা থাকবে, তাই ব্যাকগ্রাউন্ড একটু ডার্ক করেছি যাতে লেখা ফুটে ওঠে */
-.bg-overlay {
-    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-    background: radial-gradient(circle at 50% 28%, rgba(0,0,0,0.2) 15%, rgba(0,0,0,0.7) 90%);
-    z-index: 1;
-}
-
+.screen { width: 100%; height: 100%; background-image: url('sami.jpg'); background-size: cover; background-position: center; position: relative; color: white; }
+.bg-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at 50% 25%, transparent 20%, rgba(0,0,0,0.65) 90%); z-index: 1; }
 .screen > * { position: relative; z-index: 2; }
 
-/* মেনু এবং সার্চ আইকন */
-.header {
-    position: absolute; top: 25px; width: 100%; padding: 0 25px;
-    display: flex; justify-content: space-between; font-size: 22px; z-index: 10;
+/* সার্চ বার */
+.search-box {
+    position: absolute; top: 45px; width: 85%; left: 7.5%; display: flex; align-items: center;
+    background: rgba(255, 255, 255, 0.12); backdrop-filter: blur(10px); border-radius: 12px; padding: 6px 12px;
+}
+.search-box input { background: transparent; border: none; outline: none; color: white; width: 100%; font-size: 13px; }
+.search-box i { font-size: 14px; opacity: 0.7; cursor: pointer; }
+
+/* টপ সেকশন */
+.location-top { position: absolute; top: 95px; width: 100%; text-align: center; }
+#current-date { font-size: 13px; font-weight: 500; opacity: 0.8; }
+.clock-row { display: flex; justify-content: center; align-items: center; gap: 10px; margin: 2px 0; }
+#local-time { font-size: 58px; font-weight: 200; letter-spacing: -2px; }
+.weather-icon { font-size: 32px; filter: drop-shadow(0 0 10px rgba(255,255,255,0.4)); }
+#city-name { font-size: 18px; font-weight: 400; opacity: 0.9; }
+
+/* তাপমাত্রা */
+.temp-main { position: absolute; top: 290px; width: 100%; text-align: center; }
+.temp-main h2 { font-size: 85px; font-weight: 700; letter-spacing: -4px; }
+#description { font-size: 16px; font-weight: 400; opacity: 0.9; margin-top: -8px; }
+#temp-range { font-size: 13px; opacity: 0.7; }
+
+/* ইনফো বার (WIND, FEELS) */
+.info-bar { 
+    position: absolute; bottom: 85px; left: 20px; right: 20px;
+    display: flex; justify-content: space-between; font-size: 9.5px; font-weight: 700;
+    padding: 14px; background: rgba(255,255,255,0.1); backdrop-filter: blur(15px);
+    border-radius: 18px; border: 1px solid rgba(255,255,255,0.1); text-transform: uppercase;
 }
 
-/* --- ১. ঘড়ি এবং ডাইনামিক আইল্যান্ড (একদম উপরে) --- */
-.location-top { 
-    position: absolute; top: 65px; width: 100%; text-align: center; 
-}
-
-#current-date { font-size: 15px; font-weight: 500; opacity: 0.9; margin-bottom: 2px; }
-#city-name { font-size: 22px; font-weight: 600; margin-top: 5px; }
-
-.dynamic-clock-box { 
-    display: flex; justify-content: center; align-items: center; gap: 15px; 
-}
-
-#local-time { font-size: 70px; font-weight: 200; letter-spacing: -3px; }
-
-.weather-icon { 
-    font-size: 40px; 
-    filter: drop-shadow(0 0 15px rgba(255,255,255,0.5));
-    animation: float 3s ease-in-out infinite;
-}
-
-@keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-8px); }
-}
-
-/* --- ২. তাপমাত্রা (এই লেখাগুলোই এখন ফেসের ওপর উঠবে) --- */
-.temp-main { 
-    position: absolute; 
-    /* আগে ছিল 410px, এখন 220px করে দিলাম যাতে ইটের দেয়াল বা ফেসের কাছে থাকে */
-    top: 220px; 
-    width: 100%; 
-    text-align: center; 
-    text-shadow: 2px 2px 15px rgba(0,0,0,0.5); /* লেখা যাতে হারিয়ে না যায় */
-}
-
-.temp-main h2 { font-size: 95px; font-weight: 800; letter-spacing: -4px; margin-bottom: -5px; }
-#description { font-size: 20px; font-weight: 600; margin-bottom: 2px;}
-#temp-range { font-size: 15px; opacity: 0.9; font-weight: 500;}
-
-/* --- ৩. নিচের গ্লাস সেকশন --- */
-.info-grid { 
-    position: absolute; bottom: 80px; left: 20px; right: 20px;
-    display: flex; justify-content: space-around; font-size: 10px; font-weight: 700;
-    padding: 18px; background: rgba(255,255,255,0.15); backdrop-filter: blur(20px);
-    border-radius: 25px; border: 1px solid rgba(255,255,255,0.2);
-}
-
-.footer { position: absolute; bottom: 15px; width: 100%; text-align: center; font-size: 10px; opacity: 0.5; }
-.home-line { width: 100px; height: 4px; background: white; margin: 10px auto; border-radius: 10px; }
+.footer { position: absolute; bottom: 15px; width: 100%; text-align: center; font-size: 9px; opacity: 0.4; }
+.home-line { width: 90px; height: 4px; background: white; margin: 8px auto; border-radius: 10px; }
