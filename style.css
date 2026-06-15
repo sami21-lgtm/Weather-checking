@@ -10,7 +10,7 @@ body { background: #f0f0f0; display: flex; justify-content: center; align-items:
 .bg-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at 50% 25%, transparent 20%, rgba(0,0,0,0.65) 90%); z-index: 1; }
 .screen > * { position: relative; z-index: 2; }
 
-/* সার্চ বার */
+/* search bar */
 .search-box {
     position: absolute; top: 45px; width: 85%; left: 7.5%; display: flex; align-items: center;
     background: rgba(255, 255, 255, 0.12); backdrop-filter: blur(10px); border-radius: 12px; padding: 6px 12px;
@@ -18,7 +18,7 @@ body { background: #f0f0f0; display: flex; justify-content: center; align-items:
 .search-box input { background: transparent; border: none; outline: none; color: white; width: 100%; font-size: 13px; }
 .search-box i { font-size: 14px; opacity: 0.7; cursor: pointer; }
 
-/* টপ সেকশন */
+/* top section */
 .location-top { position: absolute; top: 95px; width: 100%; text-align: center; }
 #current-date { font-size: 13px; font-weight: 500; opacity: 0.8; }
 .clock-row { display: flex; justify-content: center; align-items: center; gap: 10px; margin: 2px 0; }
@@ -26,19 +26,44 @@ body { background: #f0f0f0; display: flex; justify-content: center; align-items:
 .weather-icon { font-size: 32px; filter: drop-shadow(0 0 10px rgba(255,255,255,0.4)); }
 #city-name { font-size: 18px; font-weight: 400; opacity: 0.9; }
 
-/* তাপমাত্রা */
-.temp-main { position: absolute; top: 290px; width: 100%; text-align: center; }
+/* temperature */
+.temp-main { position: absolute; top: 250px; width: 100%; text-align: center; }
 .temp-main h2 { font-size: 85px; font-weight: 700; letter-spacing: -4px; }
 #description { font-size: 16px; font-weight: 400; opacity: 0.9; margin-top: -8px; }
 #temp-range { font-size: 13px; opacity: 0.7; }
 
-/* ইনফো বার (WIND, FEELS) */
+/* info bar (wind, feels, precip, humidity) */
 .info-bar { 
-    position: absolute; bottom: 85px; left: 20px; right: 20px;
-    display: flex; justify-content: space-between; font-size: 9.5px; font-weight: 700;
+    position: absolute; top: 380px; left: 20px; right: 20px;
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;
+    font-size: 9.5px; font-weight: 700;
     padding: 14px; background: rgba(255,255,255,0.1); backdrop-filter: blur(15px);
     border-radius: 18px; border: 1px solid rgba(255,255,255,0.1); text-transform: uppercase;
 }
+.info-item { text-align: center; }
+
+/* weekly forecast (new) */
+.week-forecast {
+    position: absolute; bottom: 140px; left: 20px; right: 20px;
+    background: rgba(255,255,255,0.1); backdrop-filter: blur(15px);
+    border-radius: 18px; padding: 12px;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+.week-forecast h4 { font-size: 12px; margin-bottom: 8px; opacity: 0.8; text-align: center; }
+.forecast-list { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 6px; }
+.forecast-item { 
+    background: rgba(0,0,0,0.3); border-radius: 12px; padding: 6px 4px; 
+    text-align: center; flex: 1; font-size: 10px; font-weight: 500;
+}
+.forecast-day { font-weight: 700; }
+.forecast-temp { font-size: 11px; margin-top: 4px; }
 
 .footer { position: absolute; bottom: 15px; width: 100%; text-align: center; font-size: 9px; opacity: 0.4; }
 .home-line { width: 90px; height: 4px; background: white; margin: 8px auto; border-radius: 10px; }
+
+/* scroll for very short screens (just in case) */
+@media (max-height: 700px) {
+    .temp-main { top: 210px; }
+    .info-bar { top: 340px; }
+    .week-forecast { bottom: 120px; }
+}
