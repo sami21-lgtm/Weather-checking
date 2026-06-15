@@ -1,6 +1,6 @@
 async function updateWeather(city) {
     try {
-        // 1. Get coordinates for city
+        // ১. শহরের নাম দিয়ে ল্যাটিটিউড ও লংগিটিউড বের করা
         const res = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${city}&count=1&format=json`);
         const data = await res.json();
         
@@ -11,100 +11,64 @@ async function updateWeather(city) {
 
         const { latitude, longitude, timezone, name } = data.results[0];
         
-        // 2. Get weather data (current + daily + hourly for humidity)
-        const wRes = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,is_day,weather_code,wind_speed_10m,relative_humidity_2m&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max,weather_code&timezone=auto`);
+        // ২. ওয়েদার ডেটা আনা
+        const wRes = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,is_day,weather_code,wind_speed_10m&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=auto`);
         const wData = await wRes.json();
 
-        // 3. Update basic info
+        // ৩. HTML-এ ডেটা সেট করা
         document.getElementById('city-name').innerText = name;
         document.getElementById('temp').innerText = Math.round(wData.current.temperature_2m) + "°";
         document.getElementById('wind').innerText = Math.round(wData.current.wind_speed_10m) + " km/h";
         document.getElementById('feels-like').innerText = Math.round(wData.current.temperature_2m - 1) + "°";
         document.getElementById('precip').innerText = wData.daily.precipitation_probability_max[0] + "%";
-        document.getElementById('humidity').innerText = (wData.current.relative_humidity_2m || "—") + "%";
         document.getElementById('temp-range').innerText = Math.round(wData.daily.temperature_2m_max[0]) + "°—" + Math.round(wData.daily.temperature_2m_min[0]) + "°";
         
-        // 4. Weather description mapping (more accurate)
+        // ৪. ওয়েদার ডেসক্রিপশন আপডেট
         const code = wData.current.weather_code;
         let desc = "Clear Sky";
-        if (code == 1 || code == 2) desc = "Mainly Clear";
-        else if (code == 3) desc = "Partly Cloudy";
-        else if (code >= 45 && code < 70) desc = "Fog / Mist";
-        else if (code >= 51 && code <= 55) desc = "Drizzle";
-        else if (code >= 61 && code <= 65) desc = "Rain";
-        else if (code >= 80 && code <= 82) desc = "Rain Showers";
-        else if (code >= 95) desc = "Thunderstorm";
+        if(code > 0 && code < 45) desc = "Partly Cloudy";
+        else if(code >= 45) desc = "Cloudy / Raining";
         document.getElementById('description').innerText = desc;
 
-        // 5. Icon (Sun/Moon)
+        // ৫. আইকন সেট করা (দিন/রাত অনুযায়ী চাঁদ বা সূর্য)
         const scenery = document.getElementById('scenery');
         scenery.innerText = wData.current.is_day === 1 ? "☀️" : "🌙";
         scenery.style.filter = wData.current.is_day === 1 ? "drop-shadow(0 0 15px gold)" : "drop-shadow(0 0 15px white)";
 
-        // 6. Live clock & date
-        if (window.timer) clearInterval(window.timer);
+        // ৬. ঘড়ি ও তারিখ (অরিজিনাল আইফোন স্টাইল)
+        if(window.timer) clearInterval(window.timer);
         
         window.timer = setInterval(() => {
             const now = new Date();
+            
+            // 12-hour format, AM/PM ছাড়া
             let timeString = now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true, timeZone: timezone });
-            timeString = timeString.replace(/\s*[AP]M\s*/i, '');
+            timeString = timeString.replace(/ AM| PM/i, ''); // AM বা PM মুছে দেওয়া
+            
             document.getElementById('local-time').innerText = timeString;
             
+            // ফুল ডেট ফরম্যাট (যেমন: Tuesday, 21 April)
             const dateStr = now.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', timeZone: timezone });
             document.getElementById('current-date').innerText = dateStr;
         }, 1000);
 
-        // 7. 7-Day Forecast
-        const daily = wData.daily;
-        const forecastDiv = document.getElementById('forecast-list');
-        forecastDiv.innerHTML = '';
-        
-        const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-        const today = new Date();
-        
-        for (let i = 0; i < 7; i++) {
-            const forecastDate = new Date();
-            forecastDate.setDate(today.getDate() + i);
-            const dayName = days[forecastDate.getDay()];
-            const maxTemp = Math.round(daily.temperature_2m_max[i]);
-            const minTemp = Math.round(daily.temperature_2m_min[i]);
-            const weatherCode = daily.weather_code[i];
-            let icon = "☁️";
-            if (weatherCode === 0) icon = "☀️";
-            else if (weatherCode === 1 || weatherCode === 2) icon = "🌤️";
-            else if (weatherCode === 3) icon = "⛅";
-            else if (weatherCode >= 45 && weatherCode < 70) icon = "🌫️";
-            else if (weatherCode >= 51 && weatherCode <= 55) icon = "🌧️";
-            else if (weatherCode >= 61 && weatherCode <= 65) icon = "🌧️";
-            else if (weatherCode >= 80) icon = "🌧️";
-            else if (weatherCode >= 95) icon = "⛈️";
-            
-            forecastDiv.innerHTML += `
-                <div class="forecast-item">
-                    <div class="forecast-day">${dayName}</div>
-                    <div>${icon}</div>
-                    <div class="forecast-temp">${maxTemp}° / ${minTemp}°</div>
-                </div>
-            `;
-        }
-
     } catch (e) { 
-        console.error("Error fetching weather data:", e); 
-        alert("Network error. Please check your connection.");
+        console.error("Error fetching data:", e); 
     }
 }
 
-// Search events
+// ৭. সার্চ বক্সের লজিক (বাটনে ক্লিক করলে)
 document.getElementById('search-btn').onclick = () => {
-    const city = document.getElementById('city-input').value.trim();
+    const city = document.getElementById('city-input').value;
     if (city) updateWeather(city);
 };
 
+// ৮. সার্চ বক্সের লজিক (Enter চাপলে)
 document.getElementById('city-input').addEventListener('keypress', (e) => {
     if (e.key === 'Enter') {
-        updateWeather(e.target.value.trim());
+        updateWeather(e.target.value);
     }
 });
 
-// Initial load
+// ৯. শুরুতে ডিফল্টভাবে ঢাকা লোড হবে
 updateWeather("Dhaka");
